@@ -9,7 +9,8 @@ import type { LoginResponse } from "../models/login-response";
 
 interface AuthContextValue {
     token: string | null;
-    login: (request: LoginRequest) => Promise<void>;
+    role: string | null;
+    login: (request: LoginRequest) => Promise<string>;
     logout: () => void;
 }
 
@@ -18,6 +19,9 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [token, setToken] = useState<string | null>(() =>
         sessionStorage.getItem("token"),
+    );
+    const [role, setRole] = useState<string | null>(() =>
+            sessionStorage.getItem("role"),
     );
 
     async function login(request: LoginRequest) {
@@ -48,16 +52,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("role", data.role);
         setToken(data.token);
+        setRole(data.role);
+        return data.role;
     }
 
     function logout() {
         sessionStorage.removeItem("token");
+        sessionStorage.removeItem("role");
         setToken(null);
+        setRole(null);
     }
 
     return (
-        <AuthContext.Provider value={{ token, login, logout }}>
+        <AuthContext.Provider value={{ token, role, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

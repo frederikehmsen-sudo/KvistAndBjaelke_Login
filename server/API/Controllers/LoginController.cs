@@ -28,7 +28,7 @@ public class LoginController : ControllerBase
         }
 
         var token = _tokenService.GenerateToken(user);
-        return Ok(new { token });
+        return Ok(new { token, role = user.Role.ToString() });
     }
 
     [AllowAnonymous]

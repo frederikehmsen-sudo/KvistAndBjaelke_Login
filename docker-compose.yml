@@ -1,0 +1,24 @@
+﻿services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      JwtSecret: ${JWT_SECRET}
+      Seed__UserPassword: ${SEED_USER_PASSWORD}
+      Seed__SuperUserPassword: ${SEED_SUPERUSER_PASSWORD}
+      Seed__AdminPassword: ${SEED_ADMIN_PASSWORD}
+      ConnectionStrings__DefaultConnection: "Data Source=/app/data/app.db"
+    volumes:
+      - appdata:/app/data
+
+  frontend:
+    build: ./client        
+    ports:
+      - "8081:3000"
+    depends_on:
+      - backend
+
+volumes:
+  appdata:
