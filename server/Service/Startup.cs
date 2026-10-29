@@ -17,6 +17,7 @@ public static class Startup
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IPasswordHasher, Argon2PasswordHasher>();
         services.AddScoped<ITokenService, JwtAuthorizationService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
