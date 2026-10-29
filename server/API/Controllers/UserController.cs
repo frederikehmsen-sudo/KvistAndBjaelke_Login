@@ -1,24 +1,18 @@
 ﻿using Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.DTOs;
 using Service.Implementation;
 
 namespace API.Controllers;
 
-[Microsoft.AspNetCore.Components.Route("api/[controller]")]
+[Route("api/[controller]")]
 public class UserController(IUserService userService) : ControllerBase
 {
     [Authorize]
     [HttpGet]
-    public ActionResult<List<User>> GetAll()
+    public List<UserResponse> GetAll()
     {
-        try
-        {
-            return Ok(userService.GetUsers());
-        }
-        catch (Exception e)
-        {
-            return BadRequest("Could not get users");
-        }
+        return userService.GetUsers();
     }
 }

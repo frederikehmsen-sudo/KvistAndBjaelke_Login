@@ -5,5 +5,5 @@ namespace Service.Implementation;
 
 public interface IUserService
 {
-    List<User> GetUsers();
+    List<UserResponse> GetUsers();
 }

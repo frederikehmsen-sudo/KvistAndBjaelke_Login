@@ -9,8 +9,8 @@ namespace Service.Implementation;
 public class UserService(IUserRepository userRepository, IPasswordHasher passwordHasher) : IUserService
 {
 
-    public List<User> GetUsers()
-    {
-        return userRepository.GetAll();
-    }
+    public List<UserResponse> GetUsers() =>
+        userRepository.GetAll()
+            .Select(u => new UserResponse(u.Id, u.Username, u.Role.ToString()))
+            .ToList();
 }
