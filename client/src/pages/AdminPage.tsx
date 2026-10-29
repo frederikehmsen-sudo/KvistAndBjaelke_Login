@@ -5,7 +5,6 @@ export function AdminPage() {
     const { token, role, logout } = useAuth();
 
     if (!token) return <Navigate to="/" replace />;
-    if (role !== "Admin") return <Navigate to="/user" replace />;
 
     return (
         <div className="app">

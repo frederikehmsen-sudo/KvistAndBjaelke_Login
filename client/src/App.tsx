@@ -6,8 +6,13 @@ import { useAuth } from "./auth/AuthProvider";
 import type { LoginRequest } from "./models/login-request";
 import { UserPage } from "./pages/UserPage";
 import { AdminPage } from "./pages/AdminPage";
+import {SuperUserPage} from "./pages/SuperUserPage.tsx";
 
-const homeFor = (role: string | null) => (role === "Admin" ? "/admin" : "/user");
+const homeFor = (role: string | null) => {
+    if (role === "Admin") return "/admin";
+    if (role === "SuperUser") return "/superuser";
+    return "/user";
+};;
 
 function LoginPage() {
     const { token, role, login } = useAuth();
@@ -89,6 +94,7 @@ export function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/superuser" element={<SuperUserPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );
