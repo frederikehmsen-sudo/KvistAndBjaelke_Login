@@ -32,17 +32,30 @@ export function UserPage() {
 
     return (
         <div className="app">
-            <h1>User page</h1>
+            <h1>User Page</h1>
 
-            {error && <p role="alert">{error}</p>}
+            {error && <p className="login-error" role="alert">{error}</p>}
 
-            <ul>
+            <table className="user-table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
                 {users.map(u => (
-                    <li key={u.id}>{u.username}</li>
+                    <tr key={u.id}>
+                        <td>{u.id}</td>
+                        <td>{u.username}</td>
+                        <td>{u.role}</td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
 
-            <button className="send-button" onClick={logout}>Log out</button>
+            <button className="send-button" onClick={logout}>Log Out</button>
         </div>
     );
 }

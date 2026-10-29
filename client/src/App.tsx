@@ -49,13 +49,13 @@ function LoginPage() {
     return (
         <div className="app">
             <div className="logo-container">
-                <img src={rammus} alt="Minion" className="logo bun-logo" />
+                <img src={rammus} alt="Rammus" className="logo bun-logo" />
             </div>
 
-            <h1>Login</h1>
+            <h1>Login Page</h1>
 
             <form className="login-form" onSubmit={handleSubmit} aria-busy={isLoading}>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username </label>
                 <input
                     id="username"
                     name="username"
@@ -66,7 +66,7 @@ function LoginPage() {
                     required
                 />
 
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password </label>
                 <input
                     id="password"
                     name="password"
@@ -81,7 +81,7 @@ function LoginPage() {
                 {error && <p className="login-error" role="alert">{error}</p>}
 
                 <button className="send-button" type="submit" disabled={isLoading}>
-                    {isLoading ? "Logging in…" : "Log in"}
+                    {isLoading ? "Logging In…" : "Login"}
                 </button>
             </form>
         </div>

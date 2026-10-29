@@ -19,7 +19,7 @@ body::before {
   inset: 0;
   z-index: -1;
   opacity: 0.05;
-  background: url("./logo.svg");
+  background: url("./assets/rammus.png");
   background-size: 256px;
   transform: rotate(-12deg) scale(1.35);
   animation: slide 30s linear infinite;
@@ -184,4 +184,83 @@ code {
   ::after {
     animation: none !important;
   }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.login-form label {
+  font-size: 0.9em;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.login-form input {
+  background: #1a1a1a;
+  border: 2px solid #444;
+  border-radius: 8px;
+  color: #fbf0df;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  outline: 0;
+  transition: border-color 0.2s;
+}
+
+.login-form input:focus {
+  border-color: #f3d5a3;
+}
+
+.login-form input:disabled {
+  opacity: 0.6;
+}
+
+.login-form .send-button {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.login-form .send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-error {
+  color: #ff6b6b;
+  font-size: 0.9em;
+  margin: 0.5rem 0 0;
+}
+
+.user-table {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.user-table th,
+.user-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #444;
+}
+
+.user-table th {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #f3d5a3;
+}
+
+.user-table tbody tr:hover {
+  background: #2e2e2e;
 }
