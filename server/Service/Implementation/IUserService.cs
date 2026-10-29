@@ -5,5 +5,5 @@ namespace Service.Implementation;
 
 public interface IUserService
 {
-    List<UserResponse> GetUsers();
+    List<UserResponse> GetUsers(Role role);
 }
