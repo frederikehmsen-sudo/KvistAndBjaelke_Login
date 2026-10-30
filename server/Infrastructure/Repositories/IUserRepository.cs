@@ -9,4 +9,5 @@ public interface IUserRepository
     public User? GetById(int id);
     public void DeleteUser(User user);
     public List<User> GetAll();
+    public void UpdateUser(User user);
 }

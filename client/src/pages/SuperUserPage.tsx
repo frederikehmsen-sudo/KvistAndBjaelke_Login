@@ -20,6 +20,11 @@ export function SuperUserPage() {
     const [newPassword, setNewPassword] = useState("");
     const [createError, setCreateError] = useState("");
     const [isCreating, setIsCreating] = useState(false);
+    const [editingUser, setEditingUser] = useState<UserResponse | null>(null);
+    const [editUsername, setEditUsername] = useState("");
+    const [editPassword, setEditPassword] = useState("");
+    const [editError, setEditError] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
 
     const closeCreate = () => {
         setShowCreate(false);
@@ -32,6 +37,20 @@ export function SuperUserPage() {
         setUsers(prev => [...prev, created]);
         closeCreate();
         setNotice({ type: "success", text: `Created user "${created.username}"` });
+    };
+
+    const openEdit = (u: UserResponse) => {
+        setEditingUser(u);
+        setEditUsername(u.username);
+        setEditPassword("");
+        setEditError("");
+    };
+
+    const closeEdit = () => {
+        setEditingUser(null);
+        setEditUsername("");
+        setEditPassword("");
+        setEditError("");
     };
 
     async function handleCreate(event: FormEvent<HTMLFormElement>) {
@@ -60,6 +79,42 @@ export function SuperUserPage() {
             setCreateError(err instanceof Error ? err.message : "Could not create user");
         } finally {
             setIsCreating(false);
+        }
+    }
+
+    async function handleEdit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        if (!editingUser || isEditing) return;
+        setEditError("");
+        setIsEditing(true);
+
+        try {
+            const res = await fetch(`http://localhost:3501/api/User/${editingUser.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    username: editUsername,
+                    password: editPassword,
+                    role: "User",
+                }),
+            });
+
+            if (!res.ok) {
+                const msg = await res.text();
+                throw new Error(msg || `Fejl: ${res.status}`);
+            }
+
+            const updated: UserResponse = await res.json();
+            setUsers(prev => prev.map(u => (u.id === updated.id ? updated : u)));
+            closeEdit();
+            setNotice({ type: "success", text: `Updated user "${updated.username}"` });
+        } catch (err) {
+            setEditError(err instanceof Error ? err.message : "Could not update user");
+        } finally {
+            setIsEditing(false);
         }
     }
 
@@ -142,7 +197,17 @@ export function SuperUserPage() {
                                     onClick={() => handleDelete(u.id)}
                                 />
                             </td>
-                            <td><img src={editIcon} alt="Edit" className="small-edit-logo" /></td>
+                            <td>
+                                {u.role === "User" && (
+                                    <img
+                                        src={editIcon}
+                                        alt="Edit"
+                                        className="small-edit-logo"
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => openEdit(u)}
+                                    />
+                                )}
+                            </td>
                         </tr>
                     ))}
                     </tbody>
@@ -188,6 +253,50 @@ export function SuperUserPage() {
                                     {isCreating ? "Creating…" : "Create"}
                                 </button>
                                 <button type="button" className="send-button secondary" onClick={closeCreate} disabled={isCreating}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {editingUser && (
+                <div className="modal-backdrop" onClick={closeEdit}>
+                    <div
+                        className="modal"
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <h2>Edit user</h2>
+                        <form className="login-form" onSubmit={handleEdit} aria-busy={isEditing}>
+                            <label htmlFor="edit-username">Username</label>
+                            <input
+                                id="edit-username"
+                                value={editUsername}
+                                onChange={e => setEditUsername(e.target.value)}
+                                disabled={isEditing}
+                                required
+                            />
+
+                            <label htmlFor="edit-password">New password (leave empty to keep)</label>
+                            <input
+                                id="edit-password"
+                                type="password"
+                                autoComplete="new-password"
+                                value={editPassword}
+                                onChange={e => setEditPassword(e.target.value)}
+                                disabled={isEditing}
+                            />
+
+                            {editError && <p className="login-error" role="alert">{editError}</p>}
+
+                            <div className="modal-actions">
+                                <button type="submit" className="send-button" disabled={isEditing}>
+                                    {isEditing ? "Saving…" : "Save"}
+                                </button>
+                                <button type="button" className="send-button secondary" onClick={closeEdit} disabled={isEditing}>
                                     Cancel
                                 </button>
                             </div>

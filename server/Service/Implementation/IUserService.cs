@@ -8,4 +8,5 @@ public interface IUserService
     List<UserResponse> GetUsers(Role role);
     UserResponse CreateUser(Role actorRole, CreateUserRequest request);
     void DeleteUser(Role actorRole, int actorId, int targetId);
+    UserResponse UpdateUser(Role actorRole, int actorId, int targetId, UpdateUserRequest request);
 }

@@ -50,4 +50,19 @@ public class UserController(IUserService userService) : ControllerBase
         catch (KeyNotFoundException) { return NotFound(); }
         catch (InvalidOperationException e) { return BadRequest(e.Message); }
     }
+    
+    [Authorize(Roles = "Admin,SuperUser")]
+    [HttpPut("{id}")]
+    public IActionResult UpdateUser(int id, [FromBody] UpdateUserRequest request)
+    {
+        try
+        {
+            var updated = userService.UpdateUser(ActorRole, ActorId, id, request);
+            return Ok(updated);
+        }
+        catch (UnauthorizedAccessException) { return Forbid(); }
+        catch (KeyNotFoundException) { return NotFound(); }
+        catch (InvalidOperationException e) { return Conflict(e.Message); }
+        catch (ArgumentException e) { return BadRequest(e.Message); }
+    }
 }

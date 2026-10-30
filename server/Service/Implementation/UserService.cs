@@ -65,4 +65,45 @@ public class UserService(IUserRepository userRepository, IPasswordHasher passwor
         Role.SuperUser => target == Role.User,
         _ => false
     };
+    
+    public UserResponse UpdateUser(Role actorRole, int actorId, int targetId, UpdateUserRequest request)
+    {
+        var target = userRepository.GetById(targetId)
+                     ?? throw new KeyNotFoundException("User not found.");
+
+        if (string.IsNullOrWhiteSpace(request.Username))
+            throw new ArgumentException("Username is required.");
+        
+        if (!CanUpdate(actorRole, target.Role))
+            throw new UnauthorizedAccessException("You are not allowed to edit this user.");
+
+        var newRole = request.Role ?? target.Role;
+        
+        if (!CanUpdate(actorRole, newRole))
+            throw new UnauthorizedAccessException("You are not allowed to assign this role.");
+        
+        if (target.Id == actorId && newRole != target.Role)
+            throw new InvalidOperationException("You cannot change your own role.");
+
+        var existing = userRepository.GetUserByUsername(request.Username);
+        if (existing != null && existing.Id != target.Id)
+            throw new InvalidOperationException("Username already exists.");
+
+        target.Username = request.Username;
+        target.Role = newRole;
+
+        if (!string.IsNullOrWhiteSpace(request.Password))
+            target.Password = passwordHasher.HashAndSaltPassword(request.Password);
+
+        userRepository.UpdateUser(target);
+
+        return new UserResponse(target.Id, target.Username, target.Role.ToString());
+    }
+
+    private static bool CanUpdate(Role actor, Role target) => actor switch
+    {
+        Role.Admin => true,
+        Role.SuperUser => target == Role.User,
+        _ => false
+    };
 }
