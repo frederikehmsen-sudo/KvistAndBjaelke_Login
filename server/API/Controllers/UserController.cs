@@ -19,4 +19,18 @@ public class UserController(IUserService userService) : ControllerBase
     {
         return userService.GetUsers(ActorRole);
     }
+
+    [Authorize(Roles = "Admin,SuperUser")]
+    [HttpPost]
+    public IActionResult CreateUser([FromBody] CreateUserRequest request)
+    {
+        try
+        {
+            var created = userService.CreateUser(ActorRole, request);
+            return StatusCode(StatusCodes.Status201Created, created);
+        }
+        catch (UnauthorizedAccessException) { return Forbid(); }
+        catch (InvalidOperationException) { return Conflict("Username already exists."); }
+        catch (ArgumentException e) { return BadRequest(e.Message); }
+    }
 }

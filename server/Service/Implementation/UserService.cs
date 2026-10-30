@@ -18,4 +18,31 @@ public class UserService(IUserRepository userRepository, IPasswordHasher passwor
             )
             .Select(u => new UserResponse(u.Id, u.Username, u.Role.ToString()))
             .ToList();
+
+    public UserResponse CreateUser(Role actorRole, CreateUserRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+            throw new ArgumentException("Username and password are required.");
+
+        if (!CanCreate(actorRole, request.Role))
+            throw new UnauthorizedAccessException("You are not allowed to create this role.");
+
+        var user = new User
+        {
+            Username = request.Username,
+            Password = passwordHasher.HashAndSaltPassword(request.Password),
+            Role = request.Role
+        };
+
+        if (!userRepository.CreateUser(user))
+            throw new InvalidOperationException("Username already exists.");
+
+        return new UserResponse(user.Id, user.Username, user.Role.ToString());
+    }
+    private static bool CanCreate(Role actor, Role target) => actor switch
+    {
+        Role.Admin => true,
+        Role.SuperUser => target == Role.User,
+        _ => false
+    };
 }

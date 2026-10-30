@@ -18,13 +18,15 @@ public class UserRepository : IUserRepository
 
     }
 
-    public void CreateUser(User user)
+    public bool CreateUser(User user)
     {
-        if (_dbContext.Users.Any(x => x.Username == user.Username) == false)
+        if (_dbContext.Users.Any(x => x.Username == user.Username))
         {
+            return false;
+        }
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
-        }
+            return true;
     }
 
     public List<User> GetAll()
