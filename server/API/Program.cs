@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Infrastructure;
 using Infrastructure.DataAccess;
 using Service;
@@ -15,7 +16,8 @@ if (string.IsNullOrWhiteSpace(jwtSecret) || jwtSecret.Length < 32)
     throw new InvalidOperationException("JwtSecret must be configured and at least 32 characters");
 }
 builder.Services.ConfigureDomainServices(jwtSecret);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddCors(s => s.AddPolicy("CorsPolicy", t => t.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 var app = builder.Build();

@@ -287,3 +287,54 @@ code {
 .user-table tbody tr:hover {
   background: #2e2e2e;
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 10;
+}
+
+.modal {
+  background: #242424;
+  border: 2px solid #444;
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-width: 300px;
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-actions .send-button {
+  flex: 1;
+}
+
+.secondary {
+  background: transparent;
+  color: #fbf0df;
+  border: 2px solid #fbf0df;
+}
+
+.login-form select {
+  background: #1a1a1a;
+  border: 2px solid #444;
+  border-radius: 8px;
+  color: #fbf0df;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.form-success {
+  color: #6bff95;
+  font-size: 0.9em;
+}
