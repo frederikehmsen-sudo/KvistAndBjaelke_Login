@@ -78,6 +78,14 @@ body::before {
   transition: filter 0.3s;
 }
 
+.small-edit-logo:hover {
+  filter: drop-shadow(0 0 2em #fbf0dfaa);
+}
+
+.small-delete-logo:hover {
+  filter: drop-shadow(0 0 2em #fbf0dfaa);
+}
+
 .react-logo {
   animation: spin 20s linear infinite;
 }
