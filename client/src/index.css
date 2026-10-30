@@ -63,6 +63,21 @@ body::before {
 .bun-logo:hover {
   filter: drop-shadow(0 0 2em #fbf0dfaa);
 }
+
+.small-delete-logo{
+  height: 1.5em;
+  padding: 1em;
+  will-change: filter;
+  transition: filter 0.3s;
+}
+
+.small-edit-logo{
+  height: 1.5em;
+  padding: 1em;
+  will-change: filter;
+  transition: filter 0.3s;
+}
+
 .react-logo {
   animation: spin 20s linear infinite;
 }
