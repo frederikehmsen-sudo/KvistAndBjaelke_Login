@@ -63,6 +63,27 @@ export function SuperUserPage() {
         }
     }
 
+    async function handleDelete(id: number) {
+        if (!confirm("Delete this user?")) return;
+
+        try {
+            const res = await fetch(`http://localhost:3501/api/User/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!res.ok) {
+                const msg = await res.text();
+                throw new Error(msg || `Fejl: ${res.status}`);
+            }
+
+            setUsers(prev => prev.filter(u => u.id !== id));
+            setNotice({ type: "success", text: "User deleted" });
+        } catch (err) {
+            setNotice({ type: "error", text: err instanceof Error ? err.message : "Could not delete user" });
+        }
+    }
+
     useEffect(() => {
         if (!token) return;
 
@@ -112,7 +133,15 @@ export function SuperUserPage() {
                             <td>{u.id}</td>
                             <td>{u.username}</td>
                             <td>{u.role}</td>
-                            <td><img src={deleteIcon} alt="Delete" className="small-delete-logo" /></td>
+                            <td>
+                                <img
+                                    src={deleteIcon}
+                                    alt="Delete"
+                                    className="small-delete-logo"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => handleDelete(u.id)}
+                                />
+                            </td>
                             <td><img src={editIcon} alt="Edit" className="small-edit-logo" /></td>
                         </tr>
                     ))}

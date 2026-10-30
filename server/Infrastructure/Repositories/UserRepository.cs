@@ -29,6 +29,13 @@ public class UserRepository : IUserRepository
             return true;
     }
 
+    public User? GetById(int id) => _dbContext.Users.Find(id);
+
+    public void DeleteUser(User user)
+    {
+        _dbContext.Users.Remove(user);
+        _dbContext.SaveChanges();
+    }
     public List<User> GetAll()
     {
         return _dbContext.Users.ToList();

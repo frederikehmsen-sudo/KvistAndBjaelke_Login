@@ -33,4 +33,21 @@ public class UserController(IUserService userService) : ControllerBase
         catch (InvalidOperationException) { return Conflict("Username already exists."); }
         catch (ArgumentException e) { return BadRequest(e.Message); }
     }
+    
+    private int ActorId =>
+        int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    [Authorize(Roles = "Admin,SuperUser")]
+    [HttpDelete("{id}")]
+    public IActionResult DeleteUser(int id)
+    {
+        try
+        {
+            userService.DeleteUser(ActorRole, ActorId, id);
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException) { return Forbid(); }
+        catch (KeyNotFoundException) { return NotFound(); }
+        catch (InvalidOperationException e) { return BadRequest(e.Message); }
+    }
 }

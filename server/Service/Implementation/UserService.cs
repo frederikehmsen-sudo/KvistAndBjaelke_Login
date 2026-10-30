@@ -45,4 +45,24 @@ public class UserService(IUserRepository userRepository, IPasswordHasher passwor
         Role.SuperUser => target == Role.User,
         _ => false
     };
+    public void DeleteUser(Role actorRole, int actorId, int targetId)
+    {
+        var target = userRepository.GetById(targetId)
+                     ?? throw new KeyNotFoundException("User not found.");
+
+        if (target.Id == actorId)
+            throw new InvalidOperationException("You cannot delete yourself.");
+
+        if (!CanDelete(actorRole, target.Role))
+            throw new UnauthorizedAccessException("You are not allowed to delete this role.");
+
+        userRepository.DeleteUser(target);
+    }
+
+    private static bool CanDelete(Role actor, Role target) => actor switch
+    {
+        Role.Admin => true,
+        Role.SuperUser => target == Role.User,
+        _ => false
+    };
 }
