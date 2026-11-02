@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
+import {API_URL} from "@/config.ts";
 
 interface UserResponse {
     id: number;
@@ -16,7 +17,7 @@ export function UserPage() {
     useEffect(() => {
         if (!token) return;
 
-        fetch("http://localhost:3501/api/User", {
+        fetch(`${API_URL}/api/User`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then(res => {

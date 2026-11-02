@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { useEffect, useState, type FormEvent } from "react";
 import deleteIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
+import {API_URL} from "@/config.ts";
 
 interface UserResponse {
     id: number;
@@ -64,7 +65,7 @@ export function AdminPage() {
         setIsCreating(true);
 
         try {
-            const res = await fetch("http://localhost:3501/api/User", {
+            const res = await fetch(`${API_URL}/api/User`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,7 +94,7 @@ export function AdminPage() {
         setIsEditing(true);
 
         try {
-            const res = await fetch(`http://localhost:3501/api/User/${editingUser.id}`, {
+            const res = await fetch(`${API_URL}/api/User/${editingUser.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -126,7 +127,7 @@ export function AdminPage() {
         if (!confirm("Delete this user?")) return;
 
         try {
-            const res = await fetch(`http://localhost:3501/api/User/${id}`, {
+            const res = await fetch(`${API_URL}/api/User/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -146,7 +147,7 @@ export function AdminPage() {
     useEffect(() => {
         if (!token) return;
 
-        fetch("http://localhost:3501/api/User", {
+        fetch(`${API_URL}/api/User`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then(res => {

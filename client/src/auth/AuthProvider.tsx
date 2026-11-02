@@ -6,6 +6,7 @@
 } from "react";
 import type { LoginRequest } from "../models/login-request";
 import type { LoginResponse } from "../models/login-response";
+import {API_URL} from "@/config.ts";
 
 interface AuthContextValue {
     token: string | null;
@@ -28,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         let response: Response;
 
         try {
-            response = await fetch("http://localhost:3501/login", {
+            response = await fetch(`${API_URL}/login` , {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(request),
