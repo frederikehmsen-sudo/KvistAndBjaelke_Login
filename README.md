@@ -1,6 +1,33 @@
 # KvistAndBjaelke_Login
 ## Security
 ### 1.2
+#### Authentication
+Vi bruger JWT(JSON Web Token) til authentication. Når du logger ind bliver der genereret en token, som bruger en secret key på mindst 32 tegn, der virker i en time. Den token bliver brugt til at authenticate. Tokenet har users roller og id.
+
+#### Passwords
+Vores kodeord bliver aldrig vist i plaintext. Vi bruger argon2id til at hashe dem, hvor de får et salt og et hash. De bliver stored i databasen, og selv hvis databasen bliver hacket, er det kun den krypteret kode der er gemt. Vi kunne istedet for Argon2id have brugt Bcrypt, da vi også før har brugt det, men vi mente at Argon2Id var bedst i denne situation.
+
+#### Screenshots
+
+Forkert login:
+
+<img width="1916" height="1032" alt="Login-fail" src="https://github.com/user-attachments/assets/f9d93e25-5f20-4ec9-b45d-ac6e26f5de02" />
+
+User siden, hvor de kun ser andre users.
+
+<img width="1912" height="1032" alt="User-tabel" src="https://github.com/user-attachments/assets/862c0af3-8f1d-4723-841e-807d94ba7db0" />
+
+Super user siden, hvor de kan lave users, se users og superusers, og redigere og slette users:
+
+<img width="1917" height="1027" alt="Super-user-tabel" src="https://github.com/user-attachments/assets/495729ff-24ec-4cee-9f62-9f4311d0261c" />
+
+Admin siden, hvor man kan lave users, superusers og admins, og slette og redigere alle:
+
+<img width="1911" height="1027" alt="admin-tabel" src="https://github.com/user-attachments/assets/cf3711d6-98dd-42af-a97d-606f9d33beb3" />
+
+Lave en ny user:
+
+<img width="441" height="520" alt="create-user-new" src="https://github.com/user-attachments/assets/b077c309-1195-4bc7-aa6a-392d73cbec74" />
 
 
 ## Infrastructure
@@ -81,3 +108,5 @@ Browseren med adressebjælken:
 
 <img width="1607" height="836" alt="User-page" src="https://github.com/user-attachments/assets/bc2622b3-f965-4eec-a28c-6a5be8c3fedb" />
 
+## Problemer vi har døjet med
+Netværkskortet på vores ubuntu live server virkede ligepludselig ikke, og derfor blev vi nødt til at få hjælp af Henrik, til at få det geninstallerede.
