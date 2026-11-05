@@ -9,6 +9,8 @@ Vores kodeord bliver aldrig vist i plaintext. Vi bruger argon2id til at hashe de
 
 #### Screenshots
 
+Vi har lavet en meget simpel login applikation, hvor man kan logge ind på tre forskellige sider, hvor der er de tre forskellige roller til dem. Inde på admin siden kan du lave, redigere og slette users af alle slags. Inde på superusers kan du næsten det samme som admin, bare kun med normale users. Users kan kun se en liste af users.
+
 Forkert login:
 
 <img width="1916" height="1032" alt="Login-fail" src="https://github.com/user-attachments/assets/f9d93e25-5f20-4ec9-b45d-ac6e26f5de02" />
@@ -108,5 +110,22 @@ Browseren med adressebjælken:
 
 <img width="1607" height="836" alt="User-page" src="https://github.com/user-attachments/assets/bc2622b3-f965-4eec-a28c-6a5be8c3fedb" />
 
-## Problemer vi har døjet med
+## Endelig Reflektion
+
+### Reflektion
+#### 1. Sammenhængen mellem sikkerhed og infrastrukur
+Selvom koden er sikker og passwords er hashet og vi bruger tokens, hjælper det ikke noget hvis vores server ligger på et åbent netværk. Derfor hænger de to ting sammen, hvor applikationen beskytter selve dataen og brugerne, mens infrastruktur beskytter selve applikationen.
+
+#### 2. Tekniske udfordringer
 Netværkskortet på vores ubuntu live server virkede ligepludselig ikke, og derfor blev vi nødt til at få hjælp af Henrik, til at få det geninstallerede.
+
+Vi har også haft et problem med en .env fil, da vi i starten prøvede at seede med environment (Vi sad lidt fast i seeding). Efter det valgte vi at seede på en nemmere og mere effektiv måde.
+
+#### 3. Hvad vi lærte om at deploye en applikation på en server
+Vi lærte at en applikation der virker hos os selv, ikke automatisk virker på en server. Man skal tænke på porte, netværksadgang og meget andet. Vi lærte også at docker og docker compose er meget godt at bruge.
+
+#### 4. Hvad vil vi gøre anderledes i en rigtig virksomhed
+* Vi vil fjerne de seedede brugere i vores program.
+* Bruge en rigtig database
+* Bruge HTTPS istedet for HTTP
+* Tilføj logging
